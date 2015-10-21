@@ -1,8 +1,6 @@
 # practicals
 *university third year work*
 
-the src directory contains the supplied code for all practicals
-
 ## courses
 1. Intelligent Systems 
 
