@@ -27,7 +27,7 @@ public class BreadthFirstTreeSearch {
 						fifoQueue.add(newNode);
 					}
 				}
-			}
+			//}
 		}
 		return null;
 	}
