@@ -19,11 +19,9 @@ public abstract class LinkedListFrontier implements Frontier {
 		frontier = new LinkedList<Node>();
 	}
 	
-	public void add(Node node) {
-		frontier.add(node);
-	}
-
-	/* this differs depending on FIFO / LIFO */
+	// these can be implemented to create the desired type
+	// of frontier
+	abstract public void add(Node node);
 	abstract public Node remove() throws FrontierException;
 
 }

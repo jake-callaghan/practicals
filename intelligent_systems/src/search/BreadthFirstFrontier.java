@@ -7,6 +7,10 @@ public class BreadthFirstFrontier extends LinkedListFrontier {
 		super();
 	}
 
+	public void add(Node node) {
+		this.frontier.add(node);
+	}
+
 	public Node remove() throws FrontierException {
 		if (this.frontier.size() > 0) {
 			return this.frontier.removeFirst();
