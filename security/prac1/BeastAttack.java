@@ -1,13 +1,15 @@
 import java.io.*;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.util.Arrays;
+import java.nio.ByteBuffer;
+import java.util.Date;
 
 public class BeastAttack
 {
 
     public static void main(String[] args) throws Exception
     {
-		byte[] ciphertext=new byte[1024]; // will be plenty big enough
+		byte[] ciphertext = new byte[1024]; // will be plenty big enough
 		byte[] prefix = new byte[8];
 		
 		//===================//
@@ -15,18 +17,18 @@ public class BeastAttack
 		//===================//
 
 		// (a) determine the plaintext's length
-		//int ptextlen = findLength();
-		//System.out.println("plaintext length = "+ptextlen);
+		int ptextlen = findLength();
+		System.out.println("plaintext length = "+ptextlen);
 
-		// (b) determine a (rough) IV function
-		for (int i = 0; i < 100; i++) {
-			System.out.print(System.currentTimeMillis()+"\t");
-			int length = callEncrypt(null,0,ciphertext);
-			for (int j = 0; j<8; j++) {
-				System.out.print(String.format("%02X ",ciphertext[j]));
-			}
-			System.out.println("");
-		}
+		// (b) determine an IV function
+        compareInitVectors(10);
+
+        //===================//
+        //       Task 2      //
+        //===================//
+
+        // (a) decrypt m1
+        
 
     }
 
@@ -56,13 +58,36 @@ public class BeastAttack
     	}
     }
 
-
     // returns an initial vector based on the current system time
     // where the returned vector is 8 bytes long
-    static byte[] getInitVector() {
-    	byte[] iv = new byte[8];
-    	// ...
-    	return iv;
+    static byte[] getInitVector(byte[] iv0, long time0) {
+        long timeDiff = (new Date().getTime() - time0) * 5;
+        long iv0_long = ByteBuffer.wrap(iv0).getLong();
+        return ByteBuffer.allocate(8).putLong(iv0_long + timeDiff).array();
+    }
+
+    // compares our getInitVector function with the first 8
+    // bytes of the actual ciphertext (i.e. the actual IV)
+    static void compareInitVectors(int n) {
+        int length = callEncrypt(null,0,ciphertext);
+            long time = new Date().getTime();
+            byte[] current_iv = getInitVector(Arrays.copyOf(ciphertext,8),time);
+            
+            for (int i = 0; i < n; i++) {
+                length = callEncrypt(null,0,ciphertext);
+                time = new Date().getTime();
+                current_iv = getInitVector(Arrays.copyOf(ciphertext,8),time);
+                
+                for (int k = 0; k < 8; k++) {
+                    System.out.print(String.format("%02X ",current_iv[k]));
+                }
+                System.out.print('\t');
+                
+                for (int j = 0; j<8; j++) {
+                    System.out.print(String.format("%02X ",ciphertext[j]));
+                }
+                System.out.println("");
+            }
     }
 
     // a helper method to call the external programme "encrypt" in the current directory
@@ -84,6 +109,8 @@ public class BeastAttack
 	{
 	    process = Runtime.getRuntime().exec("./encrypt");
 	}
+
+    
 
 	// process the resulting hex string
 	String CString = (new BufferedReader(new InputStreamReader(process.getInputStream()))).readLine();
