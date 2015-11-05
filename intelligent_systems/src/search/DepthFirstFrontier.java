@@ -9,6 +9,10 @@ public class DepthFirstFrontier extends LinkedListFrontier {
 
 	public void add(Node node) {
 		this.frontier.add(node);
+		// potentially update the max value
+		if (this.frontier.size() > max) {
+			max = this.frontier.size();
+		}
 	}
 
 	public Node remove() throws FrontierException {
