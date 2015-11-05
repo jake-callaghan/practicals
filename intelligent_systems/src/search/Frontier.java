@@ -8,4 +8,12 @@ public interface Frontier {
 	Node remove() throws FrontierException;
 
 	void add(Node node);
+
+	int maxSeen();
+
+	int seen();
+
+	void clearMaxSeen();
+
+	void clearSeen();
 }
