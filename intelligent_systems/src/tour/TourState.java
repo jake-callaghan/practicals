@@ -10,11 +10,36 @@ import search.State;
 public class TourState implements State {
 	protected final Set<City> visitedCities;
 	protected final City currentCity;
-	
+
 	public TourState(City startCity) {
 		this.visitedCities = Collections.emptySet();
 		this.currentCity = startCity;
 	}
+
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		// we can safely type cast obj as a TourState
+		TourState that = (TourState) obj;
+		return (this.visitedCities.equals(that.visitedCities) && this.currentCity.equals(that.currentCity));
+	}
+
+	public int hashCode() {
+		int s = 13;
+		int p = 37; // a cheeky prime
+		s = s*p + this.visitedCities.hashCode();
+		s = s*p + this.currentCity.hashCode();
+		return s;
+	}
+
 	public TourState(Set<City> visitedCities, City currentCity) {
 		this.visitedCities = visitedCities;
 		this.currentCity = currentCity;

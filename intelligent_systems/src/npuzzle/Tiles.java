@@ -2,6 +2,7 @@ package npuzzle;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Arrays;
 
 import search.Action;
 import search.State;
@@ -13,6 +14,37 @@ public class Tiles implements State {
 	protected final int[] tiles;
 	protected final int emptyTileRow;
 	protected final int emptyTileColumn;
+
+	public boolean equals(Object that) {
+		if (this == that) {
+			return true;
+		}
+		if (that == null) {
+			return false;
+		}
+		if (getClass() != that.getClass()) {
+			return false;
+		}
+
+		// we can safely cast that as a Tiles object
+		Tiles t2 = (Tiles) that;
+
+		return ((this.width == t2.width 
+			&& Arrays.equals(this.tiles, t2.tiles)
+			&& this.emptyTileRow == t2.emptyTileRow 
+			&& this.emptyTileColumn == t2.emptyTileColumn)
+		);
+	}
+
+	public int hashCode() {
+		int s = 7;
+		int p = 37;	// a cheeky prime
+		s = p*s + width;
+		s = p*s + Arrays.hashCode(this.tiles);
+		s = p*s + emptyTileColumn;
+		s = p*s + emptyTileRow;
+		return s;
+	}
 	
 	public Tiles(int[][] tiles) {
 		width = tiles.length;
