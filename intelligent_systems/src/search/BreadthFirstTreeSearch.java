@@ -12,7 +12,7 @@ import java.util.Set;
 public class BreadthFirstTreeSearch {
 	public static Node findSolution(State initialConfiguration, GoalTest goalTest) {
 		Queue<Node> fifoQueue = new LinkedList<Node>();
-		fifoQueue.add(new Node(null, null, initialConfiguration));
+		fifoQueue.add(new Node(null, null, initialConfiguration,-1));
 		while (!fifoQueue.isEmpty()) {
 			Node node = fifoQueue.remove();
 			//if (goalTest.isGoal(node.state))
@@ -20,7 +20,7 @@ public class BreadthFirstTreeSearch {
 			//else {
 				for (Action action : node.state.getApplicableActions()) {
 					State newState = node.state.getActionResult(action);
-					Node newNode = new Node(node, action, newState);
+					Node newNode = new Node(node, action, newState,-1);
 					if (goalTest.isGoal(newState)) {
 						return newNode;
 					} else {
