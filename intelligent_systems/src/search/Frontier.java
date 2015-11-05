@@ -11,5 +11,9 @@ public interface Frontier {
 
 	int maxSeen();
 
+	int seen();
+
 	void clearMaxSeen();
+
+	void clearSeen();
 }

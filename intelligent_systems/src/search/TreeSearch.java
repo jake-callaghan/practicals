@@ -12,6 +12,7 @@ public class TreeSearch implements Search {
 		frontier.clear();
 		frontier.clearMaxSeen();
 		frontier.add(root);
+		frontier.clearSeen();
 		while (!frontier.isEmpty()) {
 			try {
 				Node node = frontier.remove();
@@ -34,6 +35,10 @@ public class TreeSearch implements Search {
 
 	public int maxNodesInFrontier() {
 		return frontier.maxSeen();
+	}
+
+	public int nodesGenerated() {
+		return frontier.seen();
 	}
 
 }

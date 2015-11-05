@@ -15,6 +15,7 @@ public class GraphSearch implements Search {
 	public Node findGoal(Node root, GoalTest goalTest) {
 		frontier.clear();
 		frontier.clearMaxSeen();
+		frontier.clearSeen();
 		pastStates.clear();
 
 		frontier.add(root);
@@ -44,6 +45,10 @@ public class GraphSearch implements Search {
 
 	public int maxNodesInFrontier() {
 		return frontier.maxSeen();
+	}
+
+	public int nodesGenerated() {
+		return frontier.seen();
 	}
 
 }

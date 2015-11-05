@@ -9,6 +9,8 @@ public class BreadthFirstFrontier extends LinkedListFrontier {
 
 	public void add(Node node) {
 		this.frontier.add(node);
+		// update the seen value
+		this.seen++;
 		// potentially update the max value
 		if (this.frontier.size() > max) {
 			max = this.frontier.size();

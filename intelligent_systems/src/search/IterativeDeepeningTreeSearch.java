@@ -12,9 +12,14 @@ public class IterativeDeepeningTreeSearch implements Search {
 		return frontier.maxSeen();
 	}
 
+	public int nodesGenerated() {
+		return frontier.seen();
+	}
+
 	public Node findGoal(Node root, GoalTest goal) {
 		int depth = 1;
 		frontier.clearMaxSeen();
+		frontier.clearSeen();
 		while (true) {	
 			frontier.clear();
 			frontier.add(root);

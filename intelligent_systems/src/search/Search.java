@@ -6,4 +6,6 @@ public interface Search {
 
 	int maxNodesInFrontier();
 
+	int nodesGenerated();
+
 }
