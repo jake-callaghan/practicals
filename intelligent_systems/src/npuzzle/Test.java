@@ -1,5 +1,7 @@
 package npuzzle;
 
+import search.*;
+
 public class Test {
 
 	/*
@@ -38,35 +40,35 @@ public class Test {
 
 		Node s = bfst.findGoal(root,goal);
 		print.printSolution(s);
-		System.out.println("max = "+s.maxNodesInFrontier());
-		System.out.println("total = "+s.nodesGenerated());
+		System.out.println("max = "+bfst.maxNodesInFrontier());
+		System.out.println("total = "+bfst.nodesGenerated());
 
 		System.out.println("--- breadth first graph search ---");
 
-		Node s = bfsg.findGoal(root,goal);
+		s = bfsg.findGoal(root,goal);
 		print.printSolution(s);
-		System.out.println("max = "+s.maxNodesInFrontier());
-		System.out.println("total = "+s.nodesGenerated());
+		System.out.println("max = "+bfsg.maxNodesInFrontier());
+		System.out.println("total = "+bfsg.nodesGenerated());
 
 		System.out.println("--- depth first tree search ---");
 
-		Node s = dfst.findGoal(root,goal);
+		s = dfst.findGoal(root,goal);
 		print.printSolution(s);
-		System.out.println("max = "+s.maxNodesInFrontier());
-		System.out.println("total = "+s.nodesGenerated());
+		System.out.println("max = "+dfst.maxNodesInFrontier());
+		System.out.println("total = "+dfst.nodesGenerated());
 
 		System.out.println("--- depth first graph search ---");
 
-		Node s = dfsg.findGoal(root,goal);
+		s = dfsg.findGoal(root,goal);
 		print.printSolution(s);
-		System.out.println("max = "+s.maxNodesInFrontier());
-		System.out.println("total = "+s.nodesGenerated());
+		System.out.println("max = "+dfsg.maxNodesInFrontier());
+		System.out.println("total = "+dfsg.nodesGenerated());
 
 		System.out.println("--- iterative deepening tree search ---");
-		Node s = iter.findGoal(root,goal);
+		s = iter.findGoal(root,goal);
 		print.printSolution(s);
-		System.out.println("max = "+s.maxNodesInFrontier());
-		System.out.println("total = "+s.nodesGenerated());
+		System.out.println("max = "+iter.maxNodesInFrontier());
+		System.out.println("total = "+iter.nodesGenerated());
 
 	}
 
