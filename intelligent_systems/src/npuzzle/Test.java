@@ -45,17 +45,21 @@ public class Test {
 
 		System.out.println("--- breadth first graph search ---");
 
+		
+
 		s = bfsg.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+bfsg.maxNodesInFrontier());
 		System.out.println("total = "+bfsg.nodesGenerated());
 
 		System.out.println("--- depth first tree search ---");
-
+		
+		/*
 		s = dfst.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+dfst.maxNodesInFrontier());
 		System.out.println("total = "+dfst.nodesGenerated());
+		
 
 		System.out.println("--- depth first graph search ---");
 
@@ -69,6 +73,8 @@ public class Test {
 		print.printSolution(s);
 		System.out.println("max = "+iter.maxNodesInFrontier());
 		System.out.println("total = "+iter.nodesGenerated());
+
+		*/
 
 	}
 

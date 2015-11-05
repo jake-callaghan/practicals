@@ -24,12 +24,14 @@ public class GraphSearch implements Search {
 		while (!frontier.isEmpty()) {
 			try {
 				Node node = frontier.remove();
+				// goal state?
+				if (goalTest.isGoal(node.state)) { return node; }
+
 				// apply each action, return any goals or add unvisited nodes
 				for (Action action : node.state.getApplicableActions()) {
 					State newState = node.state.getActionResult(action);
 					Node newNode = new Node(node,action,newState,-1);
-					// goal state?
-					if (goalTest.isGoal(newState)) { return newNode; }
+					
 					// have we not seen this state before?
 					if (!pastStates.contains(newState)) {
 						pastStates.add(newState);

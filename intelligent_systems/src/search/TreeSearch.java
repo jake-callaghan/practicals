@@ -16,14 +16,13 @@ public class TreeSearch implements Search {
 		while (!frontier.isEmpty()) {
 			try {
 				Node node = frontier.remove();
+				// goal state?
+				if (goalTest.isGoal(node.state)) { return node; }
 				// apply applicable actions to get resulting states
 				// return any if they satisfy the goal
 				for (Action action : node.state.getApplicableActions()) {
 					State newState = node.state.getActionResult(action);
 					Node newNode = new Node(node,action,newState,-1);
-					// goal state?
-					if (goalTest.isGoal(newState)) { return newNode; }
-					// non-goal -> add to the frontier
 					frontier.add(newNode);
 				}
 			} catch (FrontierException fe) {
