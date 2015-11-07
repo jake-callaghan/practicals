@@ -28,13 +28,12 @@ public class IterativeDeepeningTreeSearch implements Search {
 				try {
 					Node node = frontier.remove();
 					if (depth > node.depth) {
+						if (goal.isGoal(node.state)) {
+							return node;
+						}
 						for (Action action : node.state.getApplicableActions()) {
 							State newState = node.state.getActionResult(action);
 							Node newNode = new Node(node,action,newState,(node.depth)+1);
-							// goal state?
-							if (goal.isGoal(newState)) {
-								return newNode;
-							}
 							frontier.add(newNode);
 						}
 					}
