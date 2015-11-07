@@ -41,10 +41,8 @@ public class IterativeDeepeningTreeSearch implements Search {
 				} catch (FrontierException fe) {
 					return null;
 				}
-				depth++;	// no solution -> increment the depth!
 			}
+			depth++;	// no solution -> increment the depth!
 		}
-
 	}
-
 }
