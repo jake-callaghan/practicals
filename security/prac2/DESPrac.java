@@ -8,9 +8,17 @@ class DESPrac
 {
     public static void main(String[] args) throws IOException
     {
+
+        //=======================//
+        //        Task 1         //
+        //=======================//
+            
+        // (a)
         long testP=0x1234567887654321L;
         long testK=0x33333333333333L;
-        // ...
+        long testC=0xC844E31B90953751L;
+        long testC2=TwoRoundModifiedDES(testK,testP);
+        System.out.println(testC.equals(testC2));
 
     }
 
@@ -45,9 +53,17 @@ class DESPrac
     static long Feistel(long R, long K) // input is a 32-bit integer and 48-bit key, both stored in 64-bit signed "long"s; returns the output of the Feistel round
     {
         long F;
-        // ...
-
-    return(F);
+        // run through E-box
+        F = EBox(R);
+        // ex-or with subkey K
+        F = F ^ K;
+        // run through S-boxes
+        F = Sbox(F);
+        // combine in P-box
+        F = Pbox(F);
+        // ex-or with bottom 32-bits of subkey K
+        F = F ^ (K&MASK32);
+        return(F);
     }
 
     // NB: these differ from the tables in the DES standard because the latter are encoded in a strange order
