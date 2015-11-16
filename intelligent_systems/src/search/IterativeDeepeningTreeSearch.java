@@ -33,7 +33,7 @@ public class IterativeDeepeningTreeSearch implements Search {
 						}
 						for (Action action : node.state.getApplicableActions()) {
 							State newState = node.state.getActionResult(action);
-							Node newNode = new Node(node,action,newState,(node.depth)+1);
+							Node newNode = new Node(node,action,newState,(node.depth)+1,0,0);
 							frontier.add(newNode);
 						}
 					}

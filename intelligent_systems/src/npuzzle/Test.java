@@ -22,7 +22,7 @@ public class Test {
 			{ 5, 0, 6 }
 		});
 
-		Node root = new Node(null,null,initState,0);
+		Node root = new Node(null,null,initState,0,0,0);
 
 		GoalTest goal = new TilesGoalTest();
 

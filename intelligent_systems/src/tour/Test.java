@@ -19,7 +19,7 @@ public class Test {
 		GoalTest goal = new TourGoalTest(romania.getAllCities(), startCity);
 		TourPrinting print = new TourPrinting();
 
-		Node root = new Node(null,null,new TourState(startCity),0);
+		Node root = new Node(null,null,new TourState(startCity),0,0,0);
 		Frontier bfs_f = new BreadthFirstFrontier();
 		Search bfst = new TreeSearch(bfs_f);
 		Search bfsg = new GraphSearch(bfs_f);

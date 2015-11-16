@@ -17,6 +17,7 @@ public class BestFirstFrontier implements Frontier {
 	}
 
 	public void add(Node node) {
+		node.value = f.apply(node);
 		frontier.add(node);
 		seen++;
 		// potentially increase the max value

@@ -22,7 +22,9 @@ public class TreeSearch implements Search {
 				// return any if they satisfy the goal
 				for (Action action : node.state.getApplicableActions()) {
 					State newState = node.state.getActionResult(action);
-					Node newNode = new Node(node,action,newState,-1);
+					Node newNode = new Node(node,action,newState,-1,0,0);
+					// set the g(n) value
+					newNode.g = node.g + action.cost(node,newNode);
 					frontier.add(newNode);
 				}
 			} catch (FrontierException fe) {
