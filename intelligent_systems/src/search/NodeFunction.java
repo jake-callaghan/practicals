@@ -2,9 +2,11 @@ package search;
 
 import java.util.Comparator;
 
-abstract class NodeFunction implements Comparator<Node> {
+public class NodeFunction implements Comparator<Node> {
 	
-	abstract int apply(Node node);
+	public int apply(Node node) {
+		return 0;
+	}
 
 	public int compare(Node a, Node b) {
 		if (apply(a) < apply(b)) {

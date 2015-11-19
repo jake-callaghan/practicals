@@ -70,6 +70,9 @@ public class Tiles implements State {
 		this.emptyTileRow = emptyTileRow;
 		this.emptyTileColumn = emptyTileColumn;
 	}
+	public int[] getTiles() {
+		return tiles;
+	}
 	public int getWidth() {
 		return width;
 	}

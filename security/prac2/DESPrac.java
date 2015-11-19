@@ -18,8 +18,19 @@ class DESPrac
         long testK=0x33333333333333L;
         long testC=0xC844E31B90953751L;
         long testC2=TwoRoundModifiedDES(testK,testP);
-        System.out.println(testC.equals(testC2));
+        if (testC == testC2) { System.out.println("[Fiestel network correctly implemented]"); }
 
+        // (b)
+        for (int reps = 0; reps < 15; reps++) {
+            long start = System.nanoTime(); // init time stamp
+            for (int i = 0; i < 1000; i++) {
+                long c = TwoRoundModifiedDES(testK*reps,testP);  // do this 1000 times
+            }
+            long finish = System.nanoTime();// end time stamp
+            BigInteger time = BigInteger.valueOf(finish);
+            time = time.subtract(BigInteger.valueOf(start)); // time = finish - start
+            System.out.println("1000 encryptions took "+time+"ns");
+        }
     }
 
 
@@ -58,9 +69,9 @@ class DESPrac
         // ex-or with subkey K
         F = F ^ K;
         // run through S-boxes
-        F = Sbox(F);
+        F = SBox(F);
         // combine in P-box
-        F = Pbox(F);
+        F = PBox(F);
         // ex-or with bottom 32-bits of subkey K
         F = F ^ (K&MASK32);
         return(F);
