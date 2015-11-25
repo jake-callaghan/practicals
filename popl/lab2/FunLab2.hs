@@ -29,19 +29,20 @@ get a mem = (contents mem a, mem)
 put :: Location -> Value -> M ()
 put a v mem = ((), update mem a v)
 
-
 -- SEMANTIC DOMAINS
+
+data Thunk = Thunk Expr Env
 
 data Value =
     IntVal Integer
   | BoolVal Bool
   | Addr Location
   | Nil | Cons Value Value
-  | Function ([Value] -> M Value)
+  | Function ([Thunk] -> M Value)
 
 data Def = 
     Const Value
-  | Param (M Value)
+  | Param Thunk
 
 type Env = Environment Def
 
@@ -55,10 +56,10 @@ eval (Number n) env = result (IntVal n)
 eval (Variable x) env = 
   case find env x of
     Const v -> result v
-    Param vm -> vm
+    Param (Thunk exp env) -> eval exp env
 eval (Apply f es) env =
   eval f env $> (\fv ->
-    evalargs es env $> (\args ->
+    result (map (\e -> Thunk e env) es) $> (\args ->
       apply fv args))
 eval (If e1 e2 e3) env =
   eval e1 env $> (\b ->
@@ -96,9 +97,9 @@ evalargs (e:es) env =
 
 abstract :: [Ident] -> Expr -> Env -> Value
 abstract xs e env =
-  Function (\args -> eval e (defargs env xs (map Const args)))
+  Function (\args -> eval e (defargs env xs (map Param args)))
 
-apply :: Value -> [Value] -> M Value
+apply :: Value -> [Thunk] -> M Value
 apply (Function f) args = f args
 apply _ args = error "applying a non-function"
 
@@ -111,6 +112,13 @@ elab (Rec x e) env =
       result env' where env' = define env x (Const (abstract fps body env'))
     _ ->
       error "RHS of letrec must be a lambda"
+
+values :: [Thunk] -> M [Value]
+values [] = result []
+values (Thunk exp env : ts) = 
+	eval exp env $>	
+	  (\v -> values ts $>
+	    (\vs -> result (v:vs)))
 
 
 -- INITIAL ENVIRONMENT
@@ -142,7 +150,7 @@ init_env =
     primitive "!" (\ [Addr a] -> get a)]
   where
     constant x v = (x, Const v)
-    primitive x f = (x, Const (Function (primwrap x f)))
+    primitive x f = (x, Const (Function (\vs -> values vs $> (primwrap x f))))
     pureprim x f = primitive x (result . f)
 
 
