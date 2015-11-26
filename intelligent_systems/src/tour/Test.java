@@ -14,7 +14,7 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		Cities romania = SetUpRomania.getRomaniaMapSmall();
+		Cities romania = SetUpRomania.getRomaniaMap();
 		City startCity = romania.getState("Bucharest");
 		GoalTest goal = new TourGoalTest(romania.getAllCities(), startCity);
 		TourPrinting print = new TourPrinting();
@@ -28,14 +28,16 @@ public class Test {
 		Search dfsg = new GraphSearch(dfs_f);
 		Search iter = new IterativeDeepeningTreeSearch();
 
+		/*
 		System.out.println("--- breadth first tree search ---");
 		Node s = bfst.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+bfst.maxNodesInFrontier());
 		System.out.println("total = "+bfst.nodesGenerated());
+		*/
 
 		System.out.println("--- breadth first graph search ---");
-		s = bfsg.findGoal(root,goal);
+		Node s = bfsg.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+bfsg.maxNodesInFrontier());
 		System.out.println("total = "+bfsg.nodesGenerated());
@@ -54,11 +56,13 @@ public class Test {
 		System.out.println("max = "+dfsg.maxNodesInFrontier());
 		System.out.println("total = "+dfsg.nodesGenerated());
 
+		/*
 		System.out.println("--- iterative deepening tree search ---");
 		s = iter.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+iter.maxNodesInFrontier());
 		System.out.println("total = "+iter.nodesGenerated());
+		*/
 
 	}
 

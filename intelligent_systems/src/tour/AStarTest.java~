@@ -17,17 +17,15 @@ public class AStarTest {
 
 		Search aStarTree = new TreeSearch(frontier);
 		Search aStarGraph = new GraphSearch(frontier);
-		
-		/*
+
 		System.out.println("----- A Star Tree Search -----");
 		Node s = aStarTree.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max nodes = "+aStarTree.maxNodesInFrontier());
 		System.out.println("total nodes = "+aStarTree.nodesGenerated());
-		*/
 
 		System.out.println("----- A Star Graph Search -----");
-		Node s = aStarGraph.findGoal(root,goal);
+		s = aStarGraph.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max nodes = "+aStarGraph.maxNodesInFrontier());
 		System.out.println("total nodes = "+aStarGraph.nodesGenerated());

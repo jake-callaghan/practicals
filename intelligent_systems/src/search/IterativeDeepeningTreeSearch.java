@@ -17,7 +17,7 @@ public class IterativeDeepeningTreeSearch implements Search {
 	}
 
 	public Node findGoal(Node root, GoalTest goal) {
-		int depth = 1;
+		int depth = 0;
 		frontier.clearMaxSeen();
 		frontier.clearSeen();
 		while (true) {	
@@ -34,8 +34,10 @@ public class IterativeDeepeningTreeSearch implements Search {
 						for (Action action : node.state.getApplicableActions()) {
 							State newState = node.state.getActionResult(action);
 							Node newNode = new Node(node,action,newState,(node.depth)+1,0,0);
-							frontier.add(newNode);
+							frontier.add(newNode); 
 						}
+					} else {
+						if (goal.isGoal(node.state)) { return node; }
 					}
 				} catch (FrontierException fe) {
 					return null;
