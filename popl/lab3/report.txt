@@ -1,0 +1,16 @@
+rec loop0() = let rec f() = exit in loop f();;
+rec loop1() = loop (let rec f() = exit in f());;
+rec loop2() = loop (let rec f() = exit in loop f());;
+
+Using the monad 'type M a = Mem -> (Maybe a, Mem)'
+
+loop0 just executes f() in a loop, which in turn calls exit and thus returns and terminates.
+
+loop1 loops an expression that yields a function definition whose body calls exit.
+When it calls f(), f calls exit and thus the loop exits.
+
+loop2 loops an expression that in turn defines a function whose body is exit, and calls
+f in another loop. The dynamically (i.e. at runtime) closest loop is exited.
+
+Using a continuation based interpreter
+

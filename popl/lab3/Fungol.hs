@@ -10,24 +10,35 @@ import FunParser
 
 infixl 1 $>
 
-type M a = Mem -> (a, Mem)
+type M a = Mem -> (Maybe a, Mem)
 
-result x mem = (x, mem)
+result x mem = (Just x, mem)
 
 (xm $> f) mem =
-  let (x, mem') = xm mem in (f $! x) mem'
+  case xm mem of 
+	(Just x, mem') -> (f $! x) mem'
+	(Nothing, mem') -> exit mem'
 
 get :: Location -> M Value
-get a mem = (contents mem a, mem)
+get a mem = (Just (contents mem a), mem)
 
 put :: Location -> Value -> M ()
-put a v mem = ((), update mem a v)
+put a v mem = (Just (), update mem a v)
 
 new :: M Location
-new mem = let (a, mem') = fresh mem in (a, mem')
+new mem = let (a, mem') = fresh mem in (Just a, mem')
 
 bind :: Value -> M Location
 bind v = new $> (\ a -> put a v $> (\ () -> result a))
+
+exit :: M a
+exit mem = (Nothing,mem)
+
+orelse :: M a -> M a -> M a
+orelse xm ym mem = 
+  case xm mem of 
+	(Just x, mem') -> exit mem'
+	(Nothing, mem') -> ym mem'
 
 
 -- SEMANTIC DOMAINS
@@ -91,6 +102,12 @@ eval (While e1 e2) env = u
 	BoolVal True -> eval e2 env $> (\v2 -> u)
 	BoolVal False -> result Nil
 	_ -> error "boolean required in while loop")
+
+eval (Loop e1) env = orelse u (result Nil)
+  where 
+    u = eval e env $> (\v -> u))
+
+eval Exit env = exit
 
 eval e env =
   error ("can't evaluate " ++ pretty e)
@@ -188,7 +205,9 @@ obey (Calculate exp) (env, mem) =
   (print_value v, (env, mem'))
 obey (Define def) (env, mem) =
   let x = def_lhs def in
-  let (env', mem') = elab def env mem in
-  (print_defn env' x, (env', mem'))
+  let (maybeEnv', mem') = elab def env mem in
+    case maybeEnv' of
+       (Just env') -> (print_defn env' x, (env', mem'))
+       Nothing -> error "exit wascalled outside of loop"
 
 main = dialog funParser obey (init_env, init_mem)

@@ -10,7 +10,7 @@ data Token =
     IDENT IdKind Ident | NUMBER Integer | STRING String
   | LPAR | RPAR | COMMA | EQUAL | ASSIGN | SEMI | SSEMI | MINUS
   | IF | THEN | ELSE | LET | REC | VAL | LAMBDA | IN | WHILE | DO
-  | BADTOK Char
+  | BADTOK Char | LOOP | EXIT
   deriving Eq
 
 data IdKind = 
@@ -26,7 +26,7 @@ instance Show Token where
       EQUAL -> "="; SEMI -> ";"; SSEMI -> ";;"; ASSIGN -> ":="
       IF -> "if"; THEN -> "then"; ELSE -> "else"; LET -> "let"
       REC -> "rec"; VAL -> "val"; LAMBDA -> "lambda"; IN -> "in"
-      WHILE -> "while"; DO -> "do"
+      WHILE -> "while"; DO -> "do"; LOOP -> "loop"; EXIT -> "exit"
       BADTOK c -> [c]
 
 kwlookup = 
@@ -34,6 +34,7 @@ kwlookup =
     [("if", IF), ("then", THEN), ("else", ELSE), ("let", LET), ("in", IN),
       ("rec", REC), ("val", VAL), ("lambda", LAMBDA), ("while", WHILE), 
       ("do", DO),
+      ("loop", LOOP), ("exit", EXIT),
       ("div", IDENT MULOP "div"), 
       ("mod", IDENT MULOP "mod")]
 
@@ -111,6 +112,7 @@ p_cond =
   <+> do eat WHILE; e1 <- p_cond; eat DO; 
 		e2 <- p_cond; return (While e1 e2)
   <+> p_term6
+  <+> do eat LOOP; e1 <- p_cond; return (Loop e1)
 
 p_term6 =
   do es <- p_list p_term5 ASSIGN; return (foldr1 Assign es)
@@ -160,6 +162,7 @@ p_primary =
   do n <- p_number; return (Number n)
   <+> do x <- p_name; return (Variable x)
   <+> do eat LPAR; e <- p_expr; eat RPAR; return e
+  <+> do eat EXIT; return Exit
 
 p_number =
   do t <- scan; case t of NUMBER n -> return n; _ -> p_fail

@@ -18,6 +18,8 @@ data Expr =                     -- Expressions $e$
   | Assign Expr Expr            -- \pg $e_1$ := $e_2$
   | Sequence Expr Expr          -- \pg $e_1$; $e_2$
   | While Expr Expr             -- \pg while $e_1$ do $e_2$
+  | Loop Expr			-- loop e1
+  | Exit			-- exit
   deriving Show
 
 data Defn =                     -- Definitions $d$
