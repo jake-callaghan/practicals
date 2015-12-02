@@ -12,5 +12,9 @@ When it calls f(), f calls exit and thus the loop exits.
 loop2 loops an expression that in turn defines a function whose body is exit, and calls
 f in another loop. The dynamically (i.e. at runtime) closest loop is exited.
 
-Using a continuation based interpreter
+Using a continuation based monad 'type M a = Mem -> Cont ( ) -> Cont a -> Answer'
+where 'type Cont a = a -> Mem -> Answer'
 
+loop0 doesn't work because exit isn't in a loop at that time.
+loop1 works fine.
+loop2 now works as expected. The exit is textually bound to the outter loop.
