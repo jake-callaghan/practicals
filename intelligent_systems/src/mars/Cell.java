@@ -2,7 +2,7 @@ package mars;
 
 import search.*;
 
-// a class used to encapsulate a cell in a planet's grid
+// a class used to encapsulate a 2-tuple grid position and/or movement
 public class Cell implements Action {
 	public final int x;
 	public final int y;
@@ -39,4 +39,8 @@ public class Cell implements Action {
 		h = p * h + this.y;
 		return h;
 	}	
+
+	public String toString() {
+		return "("+x+","+y+")";
+	}
 }

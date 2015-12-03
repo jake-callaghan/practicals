@@ -38,7 +38,7 @@ public class Test {
 
 		System.out.println("--- breadth first graph search ---");
 		Node s = bfsg.findGoal(root,goal);
-		print.printSolution(s);
+		//print.printSolution(s);
 		System.out.println("max = "+bfsg.maxNodesInFrontier());
 		System.out.println("total = "+bfsg.nodesGenerated());
 
@@ -52,17 +52,17 @@ public class Test {
 	
 		System.out.println("--- depth first graph search ---");
 		s = dfsg.findGoal(root,goal);
-		print.printSolution(s);
+		//print.printSolution(s);
 		System.out.println("max = "+dfsg.maxNodesInFrontier());
 		System.out.println("total = "+dfsg.nodesGenerated());
 
-		/*
+		
 		System.out.println("--- iterative deepening tree search ---");
 		s = iter.findGoal(root,goal);
 		print.printSolution(s);
 		System.out.println("max = "+iter.maxNodesInFrontier());
 		System.out.println("total = "+iter.nodesGenerated());
-		*/
+	
 
 	}
 

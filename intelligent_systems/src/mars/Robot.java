@@ -11,6 +11,7 @@ public class Robot implements State {
 	public HashSet<Cell> visitedCells;	// explicit representation of cells seen atleast once
 		
 	public Robot(Planet planet, int batteryLife, Cell currentCell, HashSet<Cell> visitedCells) {
+		this.planet = planet;
 		this.batteryLife = batteryLife;
 		this.currentCell = currentCell;
 		this.visitedCells = visitedCells;

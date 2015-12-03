@@ -1,0 +1,169 @@
+Here are the results from solving the NPuzzle. Note, we do not run the depth-first tree search as this is not a complete search. The solution's pretty print from iterative deepening tree search has been included.
+
+As expected, the breadth-first graph search generates far fewer nodes than the breadth-first tree search and the iterative deepening tree search generated more total nodes than depth first graph but had a lot less on the frontier.
+
+$ java npuzzle.Test
+--- breadth first tree search ---
+max = 1473871
+total = 2298273
+--- breadth first graph search ---
+max = 1592
+total = 4359
+--- depth first graph search ---
+max = 14480
+total = 34266
+--- iterative deepening tree search ---
+0: start
+
+-------------
+| 7 | 4 | 2 |
+-------------
+| 8 | 1 | 3 |
+-------------
+| 5 |   | 6 |
+-------------
+
+1: move LEFT
+
+-------------
+| 7 | 4 | 2 |
+-------------
+| 8 | 1 | 3 |
+-------------
+|   | 5 | 6 |
+-------------
+
+2: move UP
+
+-------------
+| 7 | 4 | 2 |
+-------------
+|   | 1 | 3 |
+-------------
+| 8 | 5 | 6 |
+-------------
+
+3: move UP
+
+-------------
+|   | 4 | 2 |
+-------------
+| 7 | 1 | 3 |
+-------------
+| 8 | 5 | 6 |
+-------------
+
+4: move RIGHT
+
+-------------
+| 4 |   | 2 |
+-------------
+| 7 | 1 | 3 |
+-------------
+| 8 | 5 | 6 |
+-------------
+
+5: move DOWN
+
+-------------
+| 4 | 1 | 2 |
+-------------
+| 7 |   | 3 |
+-------------
+| 8 | 5 | 6 |
+-------------
+
+6: move DOWN
+
+-------------
+| 4 | 1 | 2 |
+-------------
+| 7 | 5 | 3 |
+-------------
+| 8 |   | 6 |
+-------------
+
+7: move LEFT
+
+-------------
+| 4 | 1 | 2 |
+-------------
+| 7 | 5 | 3 |
+-------------
+|   | 8 | 6 |
+-------------
+
+8: move UP
+
+-------------
+| 4 | 1 | 2 |
+-------------
+|   | 5 | 3 |
+-------------
+| 7 | 8 | 6 |
+-------------
+
+9: move UP
+
+-------------
+|   | 1 | 2 |
+-------------
+| 4 | 5 | 3 |
+-------------
+| 7 | 8 | 6 |
+-------------
+
+10: move RIGHT
+
+-------------
+| 1 |   | 2 |
+-------------
+| 4 | 5 | 3 |
+-------------
+| 7 | 8 | 6 |
+-------------
+
+11: move RIGHT
+
+-------------
+| 1 | 2 |   |
+-------------
+| 4 | 5 | 3 |
+-------------
+| 7 | 8 | 6 |
+-------------
+
+12: move DOWN
+
+-------------
+| 1 | 2 | 3 |
+-------------
+| 4 | 5 |   |
+-------------
+| 7 | 8 | 6 |
+-------------
+
+13: move DOWN
+
+-------------
+| 1 | 2 | 3 |
+-------------
+| 4 | 5 | 6 |
+-------------
+| 7 | 8 |   |
+-------------
+
+max = 25
+total = 1211854
+
+Here is a selection of results for the tour problem (using the large city):
+
+$ java tour.Test
+--- breadth first graph search ---
+max = 10984
+total = 118739
+--- depth first graph search ---
+max = 38
+total = 139
+
+Note, iterative deepening is very slow here.

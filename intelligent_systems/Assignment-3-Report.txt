@@ -1,0 +1,146 @@
+To represent the task as a search problem, I did as follows:
+
+Created a Robot class to represent the state of the search. This includes fields to represent the current battery life, position in the grid and which parts of the planet have been visited already.
+
+Actions are represented as 2-tuples (Cell objects) where an action (mx,my) applied to current cell (x,y)
+will yield cell (x + mx, y + my). Cell objects are also used to represent points in the grid that have been visited, similar to a vector.
+
+A goal node is defined in the RobotLifeChecker class, which simply checks to see if a Robot's current battery life value is 0. (i.e. the Robot has exhausted it's battery completely).
+
+To actually solve the problem, we employ the following heuristic:
+
+h = number of moves made - number of unique cells visited
+
+A best-first search will always expand the node in the frontier with lowest h. This means the first solution we find will be optimal, in terms of the actual problem, as a minimal h means we have discovered as many cells as possible given how many moves we've made.
+
+We encode the start Robot / state as Robot rover = new Robot(mars,20,new Cell(4,4),vcs), yielding the following solution of length 18:
+
+$ java mars.DeployRobot 
+{(1,0)=DOWN, (0,1)=RIGHT, (0,-1)=LEFT, (-1,0)=UP}
+0: start
+
+| battery life = 20 | current cell = (4,4) |
+| 1 visited cells = [(4,4)] |
+
+1: DOWN
+
+
+| battery life = 19 | current cell = (5,4) |
+| 2 visited cells = [(4,4), (5,4)] |
+
+2: LEFT
+
+
+| battery life = 18 | current cell = (5,3) |
+| 3 visited cells = [(4,4), (5,3), (5,4)] |
+
+3: DOWN
+
+
+| battery life = 17 | current cell = (6,3) |
+| 4 visited cells = [(4,4), (6,3), (5,3), (5,4)] |
+
+4: RIGHT
+
+
+| battery life = 16 | current cell = (6,4) |
+| 5 visited cells = [(4,4), (6,3), (6,4), (5,3), (5,4)] |
+
+5: RIGHT
+
+
+| battery life = 15 | current cell = (6,5) |
+| 6 visited cells = [(4,4), (6,3), (6,4), (6,5), (5,3), (5,4)] |
+
+6: RIGHT
+
+
+| battery life = 14 | current cell = (6,6) |
+| 7 visited cells = [(4,4), (5,3), (5,4), (6,3), (6,4), (6,5), (6,6)] |
+
+7: UP
+
+
+| battery life = 13 | current cell = (5,6) |
+| 8 visited cells = [(4,4), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6)] |
+
+8: UP
+
+
+| battery life = 12 | current cell = (4,6) |
+| 9 visited cells = [(4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6)] |
+
+9: UP
+
+
+| battery life = 11 | current cell = (3,6) |
+| 10 visited cells = [(4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (3,6)] |
+
+10: LEFT
+
+
+| battery life = 10 | current cell = (3,5) |
+| 11 visited cells = [(4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (3,5), (3,6)] |
+
+11: UP
+
+
+| battery life = 9 | current cell = (2,5) |
+| 12 visited cells = [(4,4), (4,6), (5,3), (5,4), (5,6), (2,5), (6,3), (6,4), (6,5), (6,6), (3,5), (3,6)] |
+
+12: UP
+
+
+| battery life = 8 | current cell = (1,5) |
+| 13 visited cells = [(1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6)] |
+
+13: LEFT
+
+
+| battery life = 7 | current cell = (1,4) |
+| 14 visited cells = [(1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6)] |
+
+14: UP
+
+
+| battery life = 6 | current cell = (0,4) |
+| 15 visited cells = [(1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+15: DOWN
+
+
+| battery life = 5 | current cell = (1,4) |
+| 15 visited cells = [(1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+16: LEFT
+
+
+| battery life = 4 | current cell = (1,3) |
+| 16 visited cells = [(1,3), (1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+17: LEFT
+
+
+| battery life = 3 | current cell = (1,2) |
+| 17 visited cells = [(1,2), (1,3), (1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+18: RIGHT
+
+
+| battery life = 2 | current cell = (1,3) |
+| 17 visited cells = [(1,2), (1,3), (1,4), (1,5), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+19: DOWN
+ 
+
+| battery life = 1 | current cell = (2,3) |
+| 18 visited cells = [(1,2), (1,3), (1,4), (1,5), (2,3), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+20: UP
+
+
+| battery life = 0 | current cell = (1,3) |
+| 18 visited cells = [(1,2), (1,3), (1,4), (1,5), (2,3), (2,5), (3,5), (3,6), (4,4), (4,6), (5,3), (5,4), (5,6), (6,3), (6,4), (6,5), (6,6), (0,4)] |
+
+max = 1377
+total = 2728
