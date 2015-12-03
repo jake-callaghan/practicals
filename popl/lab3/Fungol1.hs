@@ -1,4 +1,4 @@
-module Fungol(main) where
+module Fungol1(main) where
 import Parsing
 import Environment
 import Memory
@@ -13,8 +13,11 @@ infixl 1 $>
 type Cont a = a -> Mem -> Answer
 type M a = Mem -> Cont() -> Cont a -> Answer
 
+-- apply x to the success continuation with current memory mem
 result x mem kx ks = ks x mem
 
+-- here we change the success continuation to apply f on an arg and new memory mem',
+-- with same continuations kx and ks
 (xm $> f) mem kx ks = xm mem kx (\x mem' -> f x mem' kx ks)
 
 get :: Location -> M Value
@@ -33,13 +36,14 @@ exit :: M a
 exit mem kx ks = kx () mem
 
 orelse :: M a -> M a -> M a
+-- here we pass a new exit continuation that uses ym with the updated memory, mem'
 orelse xm ym mem kx ks = xm mem (\x mem' -> ym mem' kx ks) ks
 
 callxc :: (Cont () -> M a) -> M a
 callxc f mem kx ks = f kx mem kx ks
 
 withxc :: Cont () -> M a -> M a
-withxc kx xm mem kx2 = xm mem kx ks 
+withxc kx xm mem kx2 ks = xm mem kx ks 
 
 
 -- SEMANTIC DOMAINS
@@ -106,7 +110,7 @@ eval (While e1 e2) env = u
 
 eval (Loop e1) env = orelse u (result Nil)
   where 
-    u = eval e env $> (\v -> u))
+    u = eval e1 env $> (\v -> u)
 
 eval Exit env = exit
 
@@ -205,16 +209,14 @@ type Answer = (String, GloState)
 
 obey :: Phrase -> GloState -> (String, GloState)
 obey (Calculate exp) (env, mem) =
-  let (v, mem') = eval exp env mem in
-  (print_value v, (env, mem'))
-  eval exp env mem kx ks
-    where kx = (\ () mem' -> ("exit in main !", (env,mem')))
-          ks = (\ v mem' -> (print_value v, (env,mem')))
+  eval exp env mem
+    (\ () mem' -> ("***exit in main program***", (env, mem')))
+    (\ v mem' -> (print_value v, (env, mem')))
 
 obey (Define def) (env, mem) =
   let x = def_lhs def in
-  elab def env mem kx ks 
-    where kx = (\ () mem' -> ("exit in definition!", (env,mem')))
-          ks = (\ env' mem' -> (print_defn env' x, (env',mem')))
+  elab def env mem
+    (\ () mem' -> ("***exit in definition***", (env, mem')))
+    (\ env' mem' -> (print_defn env' x, (env', mem')))
 
 main = dialog funParser obey (init_env, init_mem)

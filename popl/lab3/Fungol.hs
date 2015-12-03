@@ -12,12 +12,13 @@ infixl 1 $>
 
 type M a = Mem -> (Maybe a, Mem)
 
+-- simply wrap up x and mem
 result x mem = (Just x, mem)
 
 (xm $> f) mem =
   case xm mem of 
-	(Just x, mem') -> (f $! x) mem'
-	(Nothing, mem') -> exit mem'
+	(Just x, mem') -> (f $! x) mem'	-- don't exit yet! bind f to the x and the yielded memory 
+	(Nothing, mem') -> exit mem'    -- Nothing -> exit so we call exit on this new yielded memory
 
 get :: Location -> M Value
 get a mem = (Just (contents mem a), mem)
@@ -37,8 +38,8 @@ exit mem = (Nothing,mem)
 orelse :: M a -> M a -> M a
 orelse xm ym mem = 
   case xm mem of 
-	(Just x, mem') -> exit mem'
-	(Nothing, mem') -> ym mem'
+	(Just x, mem') -> (Just x, mem') 
+	(Nothing, mem') -> ym mem'	-- use the yielded memory on monad ym 
 
 
 -- SEMANTIC DOMAINS
@@ -103,9 +104,9 @@ eval (While e1 e2) env = u
 	BoolVal False -> result Nil
 	_ -> error "boolean required in while loop")
 
-eval (Loop e1) env = orelse u (result Nil)
+eval (Loop e1) env = orelse u (result Nil) 
   where 
-    u = eval e env $> (\v -> u))
+    u = eval e1 env $> (\v -> u)
 
 eval Exit env = exit
 
